@@ -8,7 +8,7 @@ def validate_date_format(func):
         try:
             datetime.strptime(date, "%Y-%m-%d")
         except ValueError:
-            raise ValueError(f"Invalid date format. Expected '%Y-%m-%d'")
+            raise ValueError("Invalid date format. Expected '%Y-%m-%d'")
         return func(self, date, *args)
     return wrapper
 
@@ -37,11 +37,11 @@ class Scheduler:
         for timeslot in self.__timeslots:
             if timeslot["day_id"] == day_id:
                 result.append((timeslot["start"], timeslot["end"]))
-        return result
+        return sorted(result)
 
     @validate_date_format
     def get_free_slots(self, date: str) -> List[tuple[str, str]]:
-        busy_slots = sorted(self.get_busy_slots(date))
+        busy_slots = self.get_busy_slots(date)
         start_time = str()
         end_time = str()
         for day in self.__days:
@@ -65,10 +65,10 @@ class Scheduler:
             datetime.strptime(start, "%H:%M")
             datetime.strptime(end, "%H:%M")
         except ValueError:
-            raise ValueError(f"Invalid time format. Expected '%H:%M'")
+            raise ValueError("Invalid time format. Expected '%H:%M'")
         if start > end:
             raise ValueError(
-                f"Invalid time input, start must be earlier then end")
+                "Invalid time input, start must be earlier then end")
         free_slots = self.get_free_slots(date)
         for slot in free_slots:
             if slot[0] <= start and slot[1] >= end:
