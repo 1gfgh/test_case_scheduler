@@ -9,12 +9,21 @@
 
 ## Запуск
 
-* Сборка Docker-образа
+### 1. Сборка Docker-образа
 ```
 docker build -t scheduler-tests .
 ```
 
-* Запуск unit-тестов
+Если проблема с 
+```
+RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+```
+то попробуйте не использовать зеркало, то есть заменить на
+```
+RUN pip install --no-cache-dir -r requirements.txt
+```
+
+### 2. Запуск unit-тестов
 ```
 docker run --rm scheduler-tests
 ```
